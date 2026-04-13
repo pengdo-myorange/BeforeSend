@@ -516,3 +516,23 @@ h1 {
   left: 4px;
   color: #9aa0a6;
 }
+
+/* --- 정보 섹션 --- */
+.about-info {
+  font-size: 14px;
+  color: #5f6368;
+  line-height: 1.8;
+}
+
+.about-info p {
+  margin: 0;
+}
+
+.about-info a {
+  color: #FF6B2C;
+  text-decoration: none;
+}
+
+.about-info a:hover {
+  text-decoration: underline;
+}

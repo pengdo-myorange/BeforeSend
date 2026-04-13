@@ -175,7 +175,7 @@
 
     const panelState = ReviewPanel.create(panelCallbacks);
     if (!panelState) {
-      console.warn('[보내기 전에] 확장기능 컨텍스트가 무효화되었습니다. 페이지를 새로고침해주세요.');
+      _showRefreshNotice();
       return;
     }
     composeStates.set(composeContainer, { panelState, composeBody });
@@ -253,6 +253,56 @@
       message.quotedContext = quotedContext;
     }
     port.postMessage(message);
+  }
+
+  function _showRefreshNotice() {
+    const existing = document.getElementById('beforesend-refresh-notice');
+    if (existing) existing.remove();
+
+    const notice = document.createElement('div');
+    notice.id = 'beforesend-refresh-notice';
+    Object.assign(notice.style, {
+      position: 'fixed',
+      bottom: '24px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      background: '#202124',
+      color: '#fff',
+      padding: '12px 24px',
+      borderRadius: '12px',
+      fontSize: '14px',
+      fontFamily: 'Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif',
+      zIndex: '999999',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+      animation: 'none',
+    });
+
+    const text = document.createElement('span');
+    text.textContent = '확장기능이 업데이트되었습니다.';
+
+    const btn = document.createElement('button');
+    Object.assign(btn.style, {
+      background: '#FF6B2C',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '8px',
+      padding: '6px 14px',
+      fontSize: '13px',
+      fontWeight: '500',
+      cursor: 'pointer',
+      whiteSpace: 'nowrap',
+    });
+    btn.textContent = '새로고침';
+    btn.addEventListener('click', () => location.reload());
+
+    notice.appendChild(text);
+    notice.appendChild(btn);
+    document.body.appendChild(notice);
+
+    setTimeout(() => { if (notice.parentNode) notice.remove(); }, 10000);
   }
 
   if (document.readyState === 'loading') {
