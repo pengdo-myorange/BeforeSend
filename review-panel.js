@@ -393,7 +393,7 @@ const ReviewPanel = (() => {
 
     const textLine = document.createElement('div');
     textLine.className = 'change-text';
-    textLine.innerHTML = `${_escapeHtml(issue.original)}<span class="arrow">&rarr;</span>${_escapeHtml(issue.corrected)}`;
+    textLine.innerHTML = `${_escapeHtmlWithBreaks(issue.original)}<span class="arrow">&rarr;</span>${_escapeHtmlWithBreaks(issue.corrected)}`;
     detail.appendChild(textLine);
 
     if (issue.explanation) {
@@ -546,6 +546,10 @@ const ReviewPanel = (() => {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+  }
+
+  function _escapeHtmlWithBreaks(text) {
+    return _escapeHtml(text).replace(/\n/g, '<br>');
   }
 
   return {
