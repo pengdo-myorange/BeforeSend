@@ -13,11 +13,7 @@ const CATEGORIES = [
   { id: 'paragraph', name: '문단 구분 오류' },
 ];
 
-const MODEL_DESCRIPTIONS = {
-  'gemini-3-flash-preview': '최고 수준의 멀티모달 모델. 빠른 속도와 뛰어난 품질의 균형.',
-  'gemini-3.1-flash-lite-preview': '가장 빠르고 경량화된 모델. 간단한 검토에 적합합니다.',
-  'gemini-3.1-pro-preview': '가장 높은 품질의 추론 모델. 복잡한 이메일 검토에 적합합니다.',
-};
+const DEFAULT_MODEL = 'gemini-3.1-flash-lite-preview';
 
 document.addEventListener('DOMContentLoaded', () => {
   initOnboarding();
@@ -121,20 +117,16 @@ function initApiKey() {
 // --- 모델 선택 ---
 
 function initModelSelect() {
-  const select = document.getElementById('model-select');
-  const descEl = document.getElementById('model-description');
+  const input = document.getElementById('model-input');
 
   chrome.storage.sync.get(['selectedModel'], (result) => {
-    if (result.selectedModel) {
-      select.value = result.selectedModel;
-    }
-    descEl.textContent = MODEL_DESCRIPTIONS[select.value] || '';
+    input.value = result.selectedModel || DEFAULT_MODEL;
   });
 
-  select.addEventListener('change', () => {
-    const model = select.value;
+  input.addEventListener('change', () => {
+    const model = input.value.trim() || DEFAULT_MODEL;
+    input.value = model;
     chrome.storage.sync.set({ selectedModel: model });
-    descEl.textContent = MODEL_DESCRIPTIONS[model] || '';
   });
 }
 
