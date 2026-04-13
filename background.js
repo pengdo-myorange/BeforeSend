@@ -404,6 +404,18 @@ function normalizeLineBreaks(corrected, original) {
     result = rebuilt.join('\n');
   }
 
+  // 3. 맺음말 앞에 빈 줄이 없으면 추가
+  const closingPatterns = /^(감사합니다|감사드립니다|고맙습니다|수고하세요|수고하십시오|잘 부탁드립니다|부탁드립니다|좋은 하루|항상 건강)/;
+  const lines = result.split('\n');
+  const finalLines = [];
+  for (let i = 0; i < lines.length; i++) {
+    if (i > 0 && closingPatterns.test(lines[i].trim()) && lines[i - 1].trim() !== '') {
+      finalLines.push('');
+    }
+    finalLines.push(lines[i]);
+  }
+  result = finalLines.join('\n');
+
   return result;
 }
 
