@@ -152,7 +152,7 @@
     }
   }
 
-  function startReview(composeContainer) {
+  function startReview(composeContainer, _retryCount = 0) {
     const composeBody = GmailSelectors.findComposeBody(composeContainer);
     if (!composeBody) {
       console.warn('[보내기 전에] 작성 본문을 찾을 수 없습니다.');
@@ -160,6 +160,12 @@
     }
 
     const emailText = EmailExtractor.extractText(composeBody);
+
+    if ((!emailText || emailText.trim().length === 0) && _retryCount < 3) {
+      setTimeout(() => startReview(composeContainer, _retryCount + 1), 300);
+      return;
+    }
+
     const recipients = GmailSelectors.findRecipients(composeContainer);
     const quotedContext = EmailExtractor.extractQuotedContext(composeBody);
 
