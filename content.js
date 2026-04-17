@@ -139,16 +139,22 @@
       }
     });
 
-    const toolbar = GmailSelectors.findSendButtonToolbar(sendBtn);
-    if (toolbar) {
-      const computedDisplay = window.getComputedStyle(toolbar).display;
-      if (!computedDisplay.includes('flex')) {
-        toolbar.style.display = 'flex';
-        toolbar.style.alignItems = 'center';
+    // 정확히 '보내기' 버튼 바로 오른쪽(다음 형제)에 주입.
+    // appendChild로 툴바 끝에 넣으면 '보내기 옵션 더보기' 오른쪽으로 밀려나므로
+    // 보내기 버튼의 다음 형제 위치로 insertBefore.
+    const parent = sendBtn.parentElement;
+    if (parent) {
+      // flex 레이아웃이면 가로 정렬이 자연스럽게 유지됨. 테이블 레이아웃 폴백도 그대로 동작.
+      const computedDisplay = window.getComputedStyle(parent).display;
+      if (computedDisplay === 'inline' || computedDisplay === 'inline-block') {
+        parent.style.display = 'inline-flex';
+        parent.style.alignItems = 'center';
       }
-      toolbar.appendChild(reviewBtn);
+      parent.insertBefore(reviewBtn, sendBtn.nextSibling);
     } else {
-      sendBtn.parentElement.appendChild(reviewBtn);
+      // 최후의 폴백: 툴바 끝에 붙임
+      const toolbar = GmailSelectors.findSendButtonToolbar(sendBtn);
+      if (toolbar) toolbar.appendChild(reviewBtn);
     }
   }
 

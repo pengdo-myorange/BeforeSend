@@ -5,6 +5,14 @@
 형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/)를 따르며,
 버전 규칙은 [Semantic Versioning](https://semver.org/lang/ko/)을 준수합니다.
 
+## [1.2.1] - 2026-04-18
+
+### Changed
+- `[검토하기]` 버튼을 **`[보내기]` 버튼 바로 오른쪽**으로 배치. 기존에는
+  툴바 끝(보내기 옵션 더보기 오른쪽)에 주입되어 시선 흐름과 맞지 않았습니다.
+  `sendBtn.parentElement.insertBefore(btn, sendBtn.nextSibling)`로 변경하여
+  Gmail의 흔한 `dC` 래퍼와 td/tr 레이아웃 모두에서 의도한 위치에 삽입됩니다.
+
 ## [1.2.0] - 2026-04-18
 
 ### Added
